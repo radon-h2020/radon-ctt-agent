@@ -1,4 +1,4 @@
-FROM ustctt/ctt-agent:jmeter
+FROM ustctt/ctt-agent:base
 
 WORKDIR /opt
 

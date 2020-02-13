@@ -1,4 +1,4 @@
-FROM ustctt/ctt-agent:apachebench
+FROM ustctt/ctt-agent:base
 
 WORKDIR /opt
 
