@@ -5,11 +5,6 @@ env:
   - DOCKER_ORG=ustctt
   - DOCKER_REPO=ctt-agent
 
-stages:
-  - docker_auth
-  - agent_base_container
-  - agent_tool_containers
-
 jobs:
   include:
     - stage: docker_auth
@@ -18,17 +13,27 @@ jobs:
         - docker login -u "$DOCKER_USERNAME" -p "$DOCKER_PASSWORD"
     - stage: docker_base_container
       name: "Build agent base container"
+      env: 
+        - TAG=agent-base
       script: 
-        - docker build -t $DOCKER_ORG/$DOCKER_REPO:agent-base test-tool-modules/Dockerfile
-        - docker push $DOCKER_ORG/$DOCKER_REPO:agent-base
+        - docker build -t $DOCKER_ORG/$DOCKER_REPO:$TAG test-tool-modules/Dockerfile
+        - docker push $DOCKER_ORG/$DOCKER_REPO:$TAG
     - stage: agent_tool_containers
       name: "Build agent tool container for JMeter"
+      env:
+        - TAG=agent-jmeter
       script:
-        - docker build -t $DOCKER_ORG/$DOCKER_REPO:agent-jmeter test-tool-modules/jmeter/Dockerfile
-        - docker push $DOCKER_ORG/$DOCKER_REPO:agent-jmeter
+        - docker build -t $DOCKER_ORG/$DOCKER_REPO:$TAG test-tool-modules/jmeter/Dockerfile
+        - docker push $DOCKER_ORG/$DOCKER_REPO:$TAG
     - stage: agent_tool_containers
       name: "Build agent tool container for ApacheBench (ab)"
-        - docker build -t $DOCKER_ORG/$DOCKER_REPO:agent-apachebench test-tool-modules/apachebench/Dockerfile
-        - docker push $DOCKER_ORG/$DOCKER_REPO:agent-apachebench
-        
+      env:
+        - TAG=agent-apachebench
+      script:
+        - docker build -t $DOCKER_ORG/$DOCKER_REPO:$TAG test-tool-modules/apachebench/Dockerfile
+        - docker push $DOCKER_ORG/$DOCKER_REPO:$TAG
 
+stages:
+  - docker_auth
+  - agent_base_container
+  - agent_tool_containers
