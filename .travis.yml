@@ -23,20 +23,20 @@ jobs:
       env: 
         - TAG="${DOCKER_ORG_REPO}:agent-base"
       script: 
-        - docker build -t "${TAG}" test-tool-modules/Dockerfile
+        - docker build -t "${TAG}" test-tool-modules/
         - docker push "${TAG}"
     - stage: agent_tool_containers
       name: "Build agent tool container for JMeter"
       env:
         - TAG="${DOCKER_ORG_REPO}:agent-jmeter"
       script:
-        - docker build -t "${TAG}" test-tool-modules/jmeter/Dockerfile
+        - docker build -t "${TAG}" test-tool-modules/jmeter/
         - docker push "${TAG}"
     - stage: agent_tool_containers
       name: "Build agent tool container for ApacheBench (ab)"
       env:
         - TAG="${DOCKER_ORG_REPO}:agent-apachebench"
       script:
-        - docker build -t "${TAG}" test-tool-modules/apachebench/Dockerfile
+        - docker build -t "${TAG}" test-tool-modules/apachebench/
         - docker push "${TAG}"
 
