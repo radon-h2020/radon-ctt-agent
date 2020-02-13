@@ -1,0 +1,34 @@
+services:
+  - docker
+
+env: 
+  - DOCKER_ORG=ustctt
+  - DOCKER_REPO=ctt-agent
+
+stages:
+  - docker_auth
+  - agent_base_container
+  - agent_tool_containers
+
+jobs:
+  include:
+    - stage: docker_auth
+      name: "Authenticate with Docker"
+      script:
+        - docker login -u "$DOCKER_USERNAME" -p "$DOCKER_PASSWORD"
+    - stage: docker_base_container
+      name: "Build agent base container"
+      script: 
+        - docker build -t $DOCKER_ORG/$DOCKER_REPO:agent-base test-tool-modules/Dockerfile
+        - docker push $DOCKER_ORG/$DOCKER_REPO:agent-base
+    - stage: agent_tool_containers
+      name: "Build agent tool container for JMeter"
+      script:
+        - docker build -t $DOCKER_ORG/$DOCKER_REPO:agent-jmeter test-tool-modules/jmeter/Dockerfile
+        - docker push $DOCKER_ORG/$DOCKER_REPO:agent-jmeter
+    - stage: agent_tool_containers
+      name: "Build agent tool container for ApacheBench (ab)"
+        - docker build -t $DOCKER_ORG/$DOCKER_REPO:agent-apachebench test-tool-modules/apachebench/Dockerfile
+        - docker push $DOCKER_ORG/$DOCKER_REPO:agent-apachebench
+        
+
