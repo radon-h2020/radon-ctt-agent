@@ -1,4 +1,4 @@
-FROM my/pybase:latest
+FROM ustctt/ctt-agent:apachebench
 
 WORKDIR /opt
 
