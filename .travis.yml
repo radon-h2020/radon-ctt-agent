@@ -21,3 +21,4 @@ script:
 after_script:
   - docker push "${DOCKER_ORG_REPO}:jmeter"
   - docker push "${DOCKER_ORG_REPO}:apachebench"
+  - docker logout
