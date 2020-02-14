@@ -3,36 +3,32 @@ language: minimal
 services:
   - docker
 
-stages:
-  - agent base container
-  - agent tool containers
-
 env:
   global:
     - DOCKER_ORG=ustctt
     - DOCKER_REPO=ctt-agent
     - DOCKER_ORG_REPO="${DOCKER_ORG}/${DOCKER_REPO}"
 
-jobs:
-  include:
-    - stage: agent base container
-      name: "Build agent base container"
-      env: 
-        - TAG="${DOCKER_ORG_REPO}:base"
-      before_script:
-        - docker login -u "${DOCKER_USERNAME}" -p "${DOCKER_PASSWORD}"
-      script: 
-        - docker build -t "${TAG}" test-tool-modules/
-        - docker push "${TAG}"
-    - stage: agent tool containers
-      name: "Build agent tool container for ${AGENT}"
-      env:
-        - AGENT=jmeter
-        - AGENT=apachebench
-        - TAG="${DOCKER_ORG_REPO}:${AGENT}"
-      before_script:
-        - docker login -u "${DOCKER_USERNAME}" -p "${DOCKER_PASSWORD}"
-      script:
-        - docker build -t "${TAG}" "test-tool-modules/${AGENT}/"
-        - docker push "${TAG}"
+script:
+  - name: Build CTT agent base container
+    docker build -t "${DOCKER_ORG_REPO}:base" test-tool-modules/
+  - name: Build CTT agent JMeter container
+    docker build -t "${DOCKER_ORG_REPO}:jmeter" "test-tool-modules/jmeter/"
+  - name: Build CTT agent ApacheBench container
+    docker build -t "${DOCKER_ORG_REPO}:apachebench" "test-tool-modules/apachebench/"
 
+before_deploy:
+  - name: DockerHub login
+    docker login -u "${DOCKER_USERNAME}" -p "${DOCKER_PASSWORD}"
+
+deploy:
+  - name: Push CTT agent base container to DockerHub
+    docker push "${DOCKER_ORG_REPO}:base"
+  - name: Push CTT agent JMeter container to DockerHub
+    docker push "${DOCKER_ORG_REPO}:jmeter"
+  - name: Push CTT agent ApacheBench container to DockerHub
+    docker push "${DOCKER_ORG_REPO}:apachebench"
+
+after_deploy:
+  - name: DockerHub logout
+    docker logout
