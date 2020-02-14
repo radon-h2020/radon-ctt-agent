@@ -1,7 +1,10 @@
-language: minimal
-
 services:
   - docker
+
+stages:
+  - docker authentication
+  - agent base container
+  - agent tool containers
 
 env: 
   global:
@@ -9,16 +12,31 @@ env:
     - DOCKER_REPO=ctt-agent
     - DOCKER_ORG_REPO="${DOCKER_ORG}/${DOCKER_REPO}"
 
-before_script:
-  - docker login -u "${DOCKER_USERNAME}" -p "${DOCKER_PASSWORD}"
-  - docker build -t "${DOCKER_ORG_REPO}:base" test-tool-modules/
-  - docker push "${DOCKER_ORG_REPO}:base"
+jobs:
+  include:
+    - stage: docker authentication
+      name: "Authenticate with Docker"
+      script:
+        - docker login -u "${DOCKER_USERNAME}" -p "${DOCKER_PASSWORD}"
+    - stage: agent base container
+      name: "Build agent base container"
+      env: 
+        - TAG="${DOCKER_ORG_REPO}:base"
+      script: 
+        - docker build -t "${TAG}" test-tool-modules/
+        - docker push "${TAG}"
+    - stage: agent tool containers
+      name: "Build agent tool container for JMeter"
+      env:
+        - TAG="${DOCKER_ORG_REPO}:jmeter"
+      script:
+        - docker build -t "${TAG}" test-tool-modules/jmeter/
+        - docker push "${TAG}"
+    - stage: agent tool containers
+      name: "Build agent tool container for ApacheBench (ab)"
+      env:
+        - TAG="${DOCKER_ORG_REPO}:apachebench"
+      script:
+        - docker build -t "${TAG}" test-tool-modules/apachebench/
+        - docker push "${TAG}"
 
-script:
-  - docker build -t "${DOCKER_ORG_REPO}:jmeter" test-tool-modules/jmeter/
-  - docker build -t "${DOCKER_ORG_REPO}:apachebench" test-tool-modules/apachebench/
-
-after_script:
-  - docker push "${DOCKER_ORG_REPO}:jmeter"
-  - docker push "${DOCKER_ORG_REPO}:apachebench"
-  - docker logout
