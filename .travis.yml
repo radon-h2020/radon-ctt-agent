@@ -2,7 +2,6 @@ services:
   - docker
 
 stages:
-  - docker authentication
   - agent base container
   - agent tool containers
 
@@ -14,15 +13,12 @@ env:
 
 jobs:
   include:
-    - stage: docker authentication
-      name: "Authenticate with Docker"
-      script:
-        - docker login -u "${DOCKER_USERNAME}" -p "${DOCKER_PASSWORD}"
     - stage: agent base container
       name: "Build agent base container"
       env: 
         - TAG="${DOCKER_ORG_REPO}:base"
       script: 
+        - docker login -u "${DOCKER_USERNAME}" -p "${DOCKER_PASSWORD}"
         - docker build -t "${TAG}" test-tool-modules/
         - docker push "${TAG}"
     - stage: agent tool containers
@@ -30,6 +26,7 @@ jobs:
       env:
         - TAG="${DOCKER_ORG_REPO}:jmeter"
       script:
+        - docker login -u "${DOCKER_USERNAME}" -p "${DOCKER_PASSWORD}"
         - docker build -t "${TAG}" test-tool-modules/jmeter/
         - docker push "${TAG}"
     - stage: agent tool containers
@@ -37,6 +34,7 @@ jobs:
       env:
         - TAG="${DOCKER_ORG_REPO}:apachebench"
       script:
+        - docker login -u "${DOCKER_USERNAME}" -p "${DOCKER_PASSWORD}"
         - docker build -t "${TAG}" test-tool-modules/apachebench/
         - docker push "${TAG}"
 
