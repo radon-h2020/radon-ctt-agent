@@ -17,24 +17,27 @@ jobs:
       name: "Build agent base container"
       env: 
         - TAG="${DOCKER_ORG_REPO}:base"
-      script: 
+      before_script:
         - docker login -u "${DOCKER_USERNAME}" -p "${DOCKER_PASSWORD}"
+      script: 
         - docker build -t "${TAG}" test-tool-modules/
         - docker push "${TAG}"
     - stage: agent tool containers
       name: "Build agent tool container for JMeter"
       env:
         - TAG="${DOCKER_ORG_REPO}:jmeter"
-      script:
+      before_script:
         - docker login -u "${DOCKER_USERNAME}" -p "${DOCKER_PASSWORD}"
+      script:
         - docker build -t "${TAG}" test-tool-modules/jmeter/
         - docker push "${TAG}"
     - stage: agent tool containers
       name: "Build agent tool container for ApacheBench (ab)"
       env:
         - TAG="${DOCKER_ORG_REPO}:apachebench"
-      script:
+      before_script:
         - docker login -u "${DOCKER_USERNAME}" -p "${DOCKER_PASSWORD}"
+      script:
         - docker build -t "${TAG}" test-tool-modules/apachebench/
         - docker push "${TAG}"
 
