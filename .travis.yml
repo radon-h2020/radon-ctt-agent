@@ -12,9 +12,6 @@ env:
     - DOCKER_ORG=ustctt
     - DOCKER_REPO=ctt-agent
     - DOCKER_ORG_REPO="${DOCKER_ORG}/${DOCKER_REPO}"
-  jobs:
-    - AGENT=jmeter
-    - AGENT=apachebench
 
 jobs:
   include:
@@ -30,6 +27,8 @@ jobs:
     - stage: agent tool containers
       name: "Build agent tool container for ${AGENT}"
       env:
+        - AGENT=jmeter
+        - AGENT=apachebench
         - TAG="${DOCKER_ORG_REPO}:${AGENT}"
       before_script:
         - docker login -u "${DOCKER_USERNAME}" -p "${DOCKER_PASSWORD}"
