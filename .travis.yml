@@ -18,12 +18,12 @@ script:
   #
   # Build CTT agent ApacheBench container
   - docker build -t "${DOCKER_ORG_REPO}:apachebench" "test-tool-modules/apachebench/"
-
-before_deploy:
+  #
+  #
   # DockerHub login
   - docker login -u "${DOCKER_USERNAME}" -p "${DOCKER_PASSWORD}"
-
-deploy:
+  #
+  #
   # Push CTT agent base container to DockerHub
   - docker push "${DOCKER_ORG_REPO}:base"
   #
@@ -32,7 +32,7 @@ deploy:
   #
   # Push CTT agent ApacheBench container to DockerHub
   - docker push "${DOCKER_ORG_REPO}:apachebench"
-
-after_deploy:
+  #
+  #
   # DockerHub logout
   - docker logout
