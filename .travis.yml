@@ -31,7 +31,7 @@ deploy:
   - docker push "${DOCKER_ORG_REPO}:jmeter"
   #
   # Push CTT agent ApacheBench container to DockerHub
-    docker push "${DOCKER_ORG_REPO}:apachebench"
+  - docker push "${DOCKER_ORG_REPO}:apachebench"
 
 after_deploy:
   # DockerHub logout
