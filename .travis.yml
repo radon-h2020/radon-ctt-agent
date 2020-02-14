@@ -8,12 +8,13 @@ stages:
   - agent tool containers
 
 env:
-  - AGENT=jmeter
-  - AGENT=apachebench
   global:
     - DOCKER_ORG=ustctt
     - DOCKER_REPO=ctt-agent
     - DOCKER_ORG_REPO="${DOCKER_ORG}/${DOCKER_REPO}"
+  jobs:
+    - AGENT=jmeter
+    - AGENT=apachebench
 
 jobs:
   include:
