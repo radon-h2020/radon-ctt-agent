@@ -3,7 +3,7 @@ FROM alpine:latest
 WORKDIR /opt
 
 EXPOSE 5000
-HEALTHCHECK --interval=5s --start-period=5s CMD ["curl","--fail","http://localhost:5000/"] || exit 1
+HEALTHCHECK --interval=10s --start-period=10s CMD ["curl","--fail","http://localhost:5000/"] || exit 1
 
 ENV CTT_AGENT_URL https://github.com/UST-CTT/radon-ctt-agent/archive/master.zip
 ENV CTT_AGENT_NAME radon-ctt-agent-master
