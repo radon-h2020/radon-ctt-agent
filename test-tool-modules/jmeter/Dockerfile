@@ -10,5 +10,5 @@ ENV JMETER_TMP_DL_PATH /tmp/jmeter.tgz
 RUN apk add openjdk11-jre-headless
 
 RUN wget -q $JMETER_BIN_URL -O $JMETER_TMP_DL_PATH &&\
-    unzip $JMETER_TMP_DL_PATH -d /opt 
+    unzip -q $JMETER_TMP_DL_PATH -d /opt 
 ENV PATH="/opt/$JMETER_NAME/bin:$PATH"
