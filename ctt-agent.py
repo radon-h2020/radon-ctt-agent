@@ -10,10 +10,17 @@ import uuid
 
 # Module imports
 from flask import Flask, jsonify, request, send_file
+# from flask_plugins import PluginManager
 from flask_api import status
+
+
+
+from setuptools import setup, find_namespace_packages
 
 app = Flask(__name__)
 app.debug = False
+# plugin_manager = PluginManager(app)
+# plugin_list = plugin_manager.all_plugins()
 
 persistence = {
     "jmeter": {
@@ -105,8 +112,7 @@ def jmeter_configuration_create():
             'entry': config_instance
         }
     }
-    return jsonify(persistence), status.HTTP_201_CREATED
-    # return jsonify(return_json), status.HTTP_201_CREATED
+    return jsonify(return_json), status.HTTP_201_CREATED
 
 
 # Get/Delete Configuration
