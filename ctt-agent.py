@@ -47,7 +47,7 @@ persistence = {
 # - execution
 
 storage_path = '/tmp/UST-CTT-Agent'
-jmeter_executable = '/usr/bin/jmeter'
+jmeter_executable = '/usr/bin/env jmeter'
 
 test_plan_filename = 'test_plan.jmx'
 test_properties_filename = "jmeter.properties"
