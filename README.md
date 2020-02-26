@@ -1,13 +1,8 @@
-# Radon Continuous Testing Tool (CTT) Agent
-
-[![Build Status](https://travis-ci.com/UST-CTT/radon-ctt-agent.svg?branch=master)](https://travis-ci.com/UST-CTT/radon-ctt-agent)
+# RADON Continuous Testing Tool (CTT) Agent
 
 Test Execution Agent for the Radon Continuous Testing Tool (CTT)
 
-
-# RADON Continuous Testing Tool (CTT) Agent
-
-##
+[![Build Status](https://travis-ci.com/UST-CTT/radon-ctt-agent.svg?branch=master)](https://travis-ci.com/UST-CTT/radon-ctt-agent)
 
 | Items | Contents |
 | --- | --- |
