@@ -85,6 +85,18 @@ def jmeter_configuration_create():
     config_path = os.path.join(storage_path, config_path_relative)
     os.makedirs(config_path, exist_ok=True)
 
+    form_data = request.form
+
+    # Host (form)
+    if 'host' in request.form:
+        host = request.form.get('host', type=str)
+        config_instance['host'] = host
+
+    # Port (form)
+    if 'port' in request.form:
+        port = request.form.get('port')
+        config_instance['port'] = port
+
     # Test plan (file)
     test_plan_path = None
     if 'test_plan' in request.files:
@@ -154,19 +166,27 @@ def jmeter_loadtest_execute():
         # Execution folder will be below configuration folder
         execution_path = os.path.join(storage_path, config_uuid, execution_uuid)
 
-        jmeter_cli_call = [jmeter_executable]
-        jmeter_cli_call.append('-n')  # cli mode (mandatory)
-        jmeter_cli_call.append('-e')  # generate report dashboard
-        jmeter_cli_call.append('-o ' + os.path.join(execution_path,
-                                                    test_results_dashboard_folder_name))  # output folder for report dashboard
-        jmeter_cli_call.append('-j ' + os.path.join(execution_path, test_run_log_filename))
-        jmeter_cli_call.append('-l ' + os.path.join(execution_path, test_sample_results_filename))
+        # '-n' cli mode (mandatory)
+        # '-e' generate report dashboard
+        # '-o' output folder for report dashboard
+        # '-j' run log file name
+        # '-l' test sample results filename
+        jmeter_cli_call = [jmeter_executable, '-n', '-e',
+                           '-o ' + os.path.join(execution_path, test_results_dashboard_folder_name),
+                           '-j ' + os.path.join(execution_path, test_run_log_filename),
+                           '-l ' + os.path.join(execution_path, test_sample_results_filename)]
 
         # Possible extensions
         # * -r -R remote (server mode)
         # * -H -P Proxy
         # * many more ( jmeter -? )
         # * Parameter string for -Dpropkey=propvalue
+
+        if 'host' in config_entry:
+            jmeter_cli_call.append('-JHOST=' + config_entry['host'])
+
+        if 'port' in config_entry:
+            jmeter_cli_call.append('-JPORT=' + config_entry['port'])
 
         if 'test_plan_path' in config_entry:
             os.mkdir(execution_path)
