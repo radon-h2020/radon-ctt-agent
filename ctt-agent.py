@@ -9,7 +9,7 @@ import tempfile
 import uuid
 
 # Module imports
-from flask import Flask, jsonify, request, send_file
+from flask import Flask, current_app, jsonify, request, send_file
 # from flask_plugins import PluginManager
 from flask_api import status
 
@@ -18,6 +18,7 @@ from flask_api import status
 from setuptools import setup, find_namespace_packages
 
 logging.basicConfig(level=logging.INFO)
+
 app = Flask(__name__)
 app.debug = False
 # plugin_manager = PluginManager(app)
@@ -185,13 +186,13 @@ def jmeter_loadtest_execute():
 
         if 'host' in config_entry:
             jmeter_target_host = config_entry['host']
-            logging.info(f'Setting host to {jmeter_target_host}')
-            jmeter_cli_call.append('-DHOST=' + jmeter_target_host)
+            current_app.logging.info(f'Setting host to {jmeter_target_host}')
+            jmeter_cli_call.append('-JHOST=' + jmeter_target_host)
 
         if 'port' in config_entry:
             jmeter_target_port = config_entry['port']
-            logging.info(f'Setting port to {jmeter_target_port}')
-            jmeter_cli_call.append('-DPORT=' + jmeter_target_port)
+            current_app.logging.info(f'Setting port to {jmeter_target_port}')
+            jmeter_cli_call.append('-JPORT=' + jmeter_target_port)
 
         if 'test_plan_path' in config_entry:
             os.mkdir(execution_path)
@@ -205,7 +206,7 @@ def jmeter_loadtest_execute():
 
         execution_instance['cli_call'] = jmeter_cli_call
 
-        logging.info(f'JMeter CLI call: {str(jmeter_cli_call)}')
+        current_app.logging.info(f'JMeter CLI call: {str(jmeter_cli_call)}')
 
         execution_start = datetime.datetime.now()
         os.system(' '.join(jmeter_cli_call))
