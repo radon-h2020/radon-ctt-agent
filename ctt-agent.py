@@ -186,12 +186,12 @@ def jmeter_loadtest_execute():
 
         if 'host' in config_entry:
             jmeter_target_host = config_entry['host']
-            current_app.logging.info(f'Setting host to {jmeter_target_host}')
+            current_app.logger.info(f'Setting host to {jmeter_target_host}')
             jmeter_cli_call.append('-JHOST=' + jmeter_target_host)
 
         if 'port' in config_entry:
             jmeter_target_port = config_entry['port']
-            current_app.logging.info(f'Setting port to {jmeter_target_port}')
+            current_app.logger.info(f'Setting port to {jmeter_target_port}')
             jmeter_cli_call.append('-JPORT=' + jmeter_target_port)
 
         if 'test_plan_path' in config_entry:
@@ -206,7 +206,7 @@ def jmeter_loadtest_execute():
 
         execution_instance['cli_call'] = jmeter_cli_call
 
-        current_app.logging.info(f'JMeter CLI call: {str(jmeter_cli_call)}')
+        current_app.logger.info(f'JMeter CLI call: {str(jmeter_cli_call)}')
 
         execution_start = datetime.datetime.now()
         os.system(' '.join(jmeter_cli_call))
