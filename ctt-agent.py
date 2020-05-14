@@ -2,6 +2,7 @@
 
 # Native imports
 import datetime
+import json
 import logging
 import os
 import shutil
@@ -43,12 +44,7 @@ persistence = {
     }
 }
 
-
-# zip
-# - config
-# - execution
-
-storage_path = '/tmp/UST-CTT-Agent'
+storage_path = '/tmp/radon-ctt-agent'
 jmeter_executable = '/usr/bin/env jmeter'
 
 test_plan_filename = 'test_plan.jmx'
@@ -87,16 +83,19 @@ def jmeter_configuration_create():
     config_path = os.path.join(storage_path, config_path_relative)
     os.makedirs(config_path, exist_ok=True)
 
-    form_data = request.form
+    current_app.logger.debug(json.dumps(request.form))
+
 
     # Host (form)
     if 'host' in request.form:
         host = request.form.get('host', type=str)
+        current_app.logger.info(f'\'host\' set to: {host}')
         config_instance['host'] = host
 
     # Port (form)
     if 'port' in request.form:
         port = request.form.get('port')
+        current_app.logger.info(f'\'port\' set to: {port}')
         config_instance['port'] = port
 
     # Test plan (file)
@@ -126,6 +125,7 @@ def jmeter_configuration_create():
             'entry': config_instance
         }
     }
+
     return jsonify(return_json), status.HTTP_201_CREATED
 
 
