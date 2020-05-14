@@ -1,4 +1,4 @@
-FROM ustctt/ctt-agent:base
+FROM radonconsortium/radon-ctt-agent:base
 
 WORKDIR /opt
 
