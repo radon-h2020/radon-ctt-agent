@@ -5,8 +5,13 @@ WORKDIR /opt
 EXPOSE 5000
 HEALTHCHECK --start-period=10s CMD curl --fail "http://localhost:5000/" || exit 1
 
-ENV CTT_AGENT_URL https://github.com/radon-h2020/radon-ctt-agent/archive/master.zip
-ENV CTT_AGENT_NAME radon-ctt-agent
+ENV CTT_AGENT_GITHUB_ORG radon-h2020
+ENV CTT_AGENT_GITHUB_REPOSITORY radon-ctt-agent
+ENV CTT_AGENT_GITHUB_BRANCH master
+ENV CTT_AGENT_URL "https://github.com/${CTT_AGENT_GITHUB_ORG}/${radon-ctt-agent}/archive/${CTT_AGENT_GITHUB_BRANCH}.zip"
+# Name of the folder inside the downloaded ZIP-file
+
+ENV CTT_AGENT_NAME "${CTT_AGENT_GITHUB_REPOSITORY}-${CTT_AGENT_GITHUB_BRANCH}"
 
 RUN apk update && apk upgrade
 RUN apk add curl python3 py3-pip
