@@ -5,19 +5,24 @@ services:
 
 env:
   global:
-    - DOCKER_ORG=ustctt
-    - DOCKER_REPO=ctt-agent
+    - DOCKER_ORG=radonconsortium
+    - DOCKER_REPO=radon-ctt-agent
     - DOCKER_ORG_REPO="${DOCKER_ORG}/${DOCKER_REPO}"
-
+    - REPO_DIR="radon-h2020_radon-ctt-agent"
+    - REPO_URL="https://github.com/radon-h2020/radon-ctt-agent.git"
+  
 script:
+  # Clone parent repository
+  - git clone "${REPO_URL}" "${REPO_DIR}"
+  #
   # Build CTT agent base container
-  - docker build -t "${DOCKER_ORG_REPO}:base" test-tool-modules/
+  - docker build -t "${DOCKER_ORG_REPO}:base" "${REPO_DIR}/test-tool-modules/"
   # 
   # Build CTT agent JMeter container
-  - docker build -t "${DOCKER_ORG_REPO}:jmeter" "test-tool-modules/jmeter/"
+  - docker build -t "${DOCKER_ORG_REPO}:jmeter" "${REPO_DIR}/test-tool-modules/jmeter/"
   #
   # Build CTT agent ApacheBench container
-  - docker build -t "${DOCKER_ORG_REPO}:apachebench" "test-tool-modules/apachebench/"
+  - docker build -t "${DOCKER_ORG_REPO}:apachebench" "${REPO_DIR}/test-tool-modules/apachebench/"
   #
   #
   # DockerHub login
