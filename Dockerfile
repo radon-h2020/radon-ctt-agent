@@ -19,6 +19,7 @@ RUN pip3 install --no-cache virtualenv
 
 RUN wget -q $CTT_AGENT_URL -O /tmp/$CTT_AGENT_NAME.zip &&\
     unzip -q /tmp/$CTT_AGENT_NAME.zip -d /opt
+ENV PATH="/opt/$CTT_AGENT_NAME:$PATH"
 
 VOLUME /opt/$CTT_AGENT_NAME/plugins
 
