@@ -22,7 +22,7 @@ do
 done
 
 # Start CTT Server
-python ctt-agent.py
+python3 ctt-agent.py
 
 deactivate
 
