@@ -6,7 +6,7 @@ Test Execution Agent for the Radon Continuous Testing Tool (CTT)
 
 | Items | Contents |
 | --- | --- |
-| **Description** | The Continuous Testing Tool Agent provides testing agents for different testing tools to be used by the CTT server.  |
+| **Description** | The Continuous Testing Tool Agent provides the basic framework to be extended by [testing tool plugins](https://github.com/radon-h2020/radon-ctt-agent-plugins) providing the funcitonality for specific testing tools. |
 | **Licence**| Apache License, Version 2.0: https://opensource.org/licenses/Apache-2.0 |
 | **Maintainers**| <ul><li>Thomas F. Düllmann ([@duelle](https://github.com/duelle)) </li><li>Andre van Hoorn ([@avanhoorn](https://github.com/avanhoorn)) </li></ul> |
 
